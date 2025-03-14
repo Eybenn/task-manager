@@ -129,9 +129,9 @@ function manipulateTodo(e) {
   }
 
   if (target.classList.contains("edit-btn")) {
-    const todoDiv = target.parentElement;
-    if (todoDiv.classList.contains("edit-btn")) {
-    }
+    const todoItem = todoDiv.querySelector(".todo-item");
+    const newValue = todoItem.textContent;
+    // I don't know how to make a text input.a;sm dhgjahjsgdas
   }
 
   if (target.classList.contains("trash-btn")) {
