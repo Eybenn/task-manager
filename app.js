@@ -155,10 +155,15 @@ function updateTodoStatus(todo, newStatus) {
   localStorage.setItem("todos", JSON.stringify(todosArray));
 }
 
-function editTodo() {
+function editTodo(todo, newValue) {
   const todosArray = getTodosFromLocalStorage();
-  const todoObject = todosArray.find((todoObject) => {});
+  const todoObject = todosArray.find((todoObject) => {
+    return todoObject.todo === todo;
+  });
+  todoObject.todo = newValue;
+  localStorage.setItem("todos", JSON.stringify(todosArray));
 }
+
 function deleteTodo(todo) {
   const todosArray = getTodosFromLocalStorage();
   const todoObjectIndex = todosArray.findIndex((todoObject) => {
