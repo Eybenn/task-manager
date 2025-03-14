@@ -128,6 +128,12 @@ function manipulateTodo(e) {
     }
   }
 
+  if (target.classList.contains("edit-btn")) {
+    const todoDiv = target.parentElement;
+    if (todoDiv.classList.contains("edit-btn")) {
+    }
+  }
+
   if (target.classList.contains("trash-btn")) {
     const todoDiv = target.parentElement;
     todoDiv.classList.add("fall");
@@ -149,6 +155,10 @@ function updateTodoStatus(todo, newStatus) {
   localStorage.setItem("todos", JSON.stringify(todosArray));
 }
 
+function editTodo() {
+  const todosArray = getTodosFromLocalStorage();
+  const todoObject = todosArray.find((todoObject) => {});
+}
 function deleteTodo(todo) {
   const todosArray = getTodosFromLocalStorage();
   const todoObjectIndex = todosArray.findIndex((todoObject) => {
