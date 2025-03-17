@@ -97,6 +97,14 @@ function renderTodos() {
     editButton.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
     todoDiv.appendChild(editButton);
 
+    // Create an edited task
+    const editInput = document.createElement("input");
+    editInput.type = "text";
+    editInput.classList.add("text");
+    editInput.value = "";
+    editInput.setAttribute("readonly", "readonly");
+    todoDiv.appendChild(editInput);
+
     // Create a button to delete the task
     const trashButton = document.createElement("button");
     trashButton.classList.add("trash-btn");
@@ -129,9 +137,17 @@ function manipulateTodo(e) {
   }
 
   if (target.classList.contains("edit-btn")) {
-    const todoItem = todoDiv.querySelector(".todo-item");
-    const newValue = todoItem.textContent;
-    // I don't know how to make a text input.a;sm dhgjahjsgdas
+    const todoDiv = target.parentElement;
+    todoDiv.addEventListener("click", () => {
+      if (target == "edit-btn") {
+        editInput.setAttribute("readonly", "readonly");
+        editInput.focus();
+        editButton = "save";
+      } else {
+        editInput.setAttribute("readonly", "readonly");
+        editButton = "save";
+      } // I CRY SIR T.T
+    });
   }
 
   if (target.classList.contains("trash-btn")) {
@@ -155,12 +171,12 @@ function updateTodoStatus(todo, newStatus) {
   localStorage.setItem("todos", JSON.stringify(todosArray));
 }
 
-function editTodo(todo, newValue) {
+function editTodo(todo, editTask) {
   const todosArray = getTodosFromLocalStorage();
   const todoObject = todosArray.find((todoObject) => {
     return todoObject.todo === todo;
   });
-  todoObject.todo = newValue;
+  todoObject.todo = editTask;
   localStorage.setItem("todos", JSON.stringify(todosArray));
 }
 
