@@ -62,6 +62,7 @@ function getTodosFromLocalStorage() {
   } else {
     todosArray = JSON.parse(localStorage.getItem("todos"));
   }
+
   return todosArray;
 }
 
@@ -97,14 +98,6 @@ function renderTodos() {
     editButton.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
     todoDiv.appendChild(editButton);
 
-    // Create an edited task
-    const editInput = document.createElement("input");
-    editInput.type = "text";
-    editInput.classList.add("text");
-    editInput.value = "";
-    editInput.setAttribute("readonly", "readonly");
-    todoDiv.appendChild(editInput);
-
     // Create a button to delete the task
     const trashButton = document.createElement("button");
     trashButton.classList.add("trash-btn");
@@ -138,16 +131,37 @@ function manipulateTodo(e) {
 
   if (target.classList.contains("edit-btn")) {
     const todoDiv = target.parentElement;
-    todoDiv.addEventListener("click", () => {
-      if (target == "edit-btn") {
-        editInput.setAttribute("readonly", "readonly");
-        editInput.focus();
-        editButton = "save";
-      } else {
-        editInput.setAttribute("readonly", "readonly");
-        editButton = "save";
-      } // I CRY SIR T.T
-    });
+    const todoText = todoDiv.innerText;
+
+    const editInput = document.createElement("Input");
+    editInput.type = "text";
+    editInput.value = todoText;
+    editInput.classList.add("edit-input");
+
+    todoDiv.querySelector(".todo-item").replaceWith(editInput);
+
+    const saveButton = document.createElement("button");
+    saveButton.classList.add("save-btn");
+    saveButton.innerHTML = `<i class="fa-solid fa-floppy-disk"></i>`;
+    todoDiv.querySelector(".edit-btn").replaceWith(saveButton);
+
+    const saveTodo = () => {
+      const newTodoText = editInput.value.trim();
+      if (newTodoText !== "") {
+        updateTodo(todoText, newTodoText);
+
+        const listItem = document.createElement("li");
+        listItem.classList.add("todo-item");
+        listItem.textContent = newTodoText;
+        todoDiv.querySelector(".edit-input").replaceWith(listItem);
+
+        const editButton = document.createElement("button");
+        editButton.classList.add("edit-btn");
+        editButton.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
+        todoDiv.querySelector(".save-btn").replaceWith(editButton);
+      }
+    };
+    saveButton.addEventListener("click", saveTodo);
   }
 
   if (target.classList.contains("trash-btn")) {
@@ -171,12 +185,12 @@ function updateTodoStatus(todo, newStatus) {
   localStorage.setItem("todos", JSON.stringify(todosArray));
 }
 
-function editTodo(todo, editTask) {
+function updateTodo(todo, newTodo) {
   const todosArray = getTodosFromLocalStorage();
   const todoObject = todosArray.find((todoObject) => {
     return todoObject.todo === todo;
   });
-  todoObject.todo = editTask;
+  todoObject.todo = newTodo;
   localStorage.setItem("todos", JSON.stringify(todosArray));
 }
 
